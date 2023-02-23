@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class Layout extends StatefulWidget {
-  const Layout({super.key});
+  final Widget child, topBar;
+
+  const Layout({Key? key, required this.topBar, required this.child})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -11,23 +16,43 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
   final Color backgroundColor = const Color(0xFF000000);
-  var isVisible = false;
   late double screenHeight, screenWidth;
-  var duration = const Duration(milliseconds: 100);
+  late Map<String, double> positions;
+  late double drawerWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    screenWidth = (window.physicalSize.shortestSide / window.devicePixelRatio);
+    screenHeight = (window.physicalSize.longestSide / window.devicePixelRatio);
+    drawerWidth = screenWidth * 0.78;
+    positions = {"left": -drawerWidth, "center": 0.0, "right": screenWidth};
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
-    screenHeight = size.height;
-    screenWidth = size.width;
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Stack(
-        children: [leftDrawer(context), body(context)],
-      ),
-    );
+        backgroundColor: backgroundColor,
+        body: SizedBox(
+          width: screenWidth,
+          height: screenHeight,
+          child: Stack(
+            children: [
+              Section(
+                  width: drawerWidth,
+                  position: positions["left"]!,
+                  child: leftDrawer(context)),
+              Section(
+                  width: screenWidth,
+                  position: positions["center"]!,
+                  child: body(context, widget.topBar, widget.child)),
+              Section(
+                  width: drawerWidth,
+                  position: positions["right"]!,
+                  child: rightDrawer(context))
+            ],
+          ),
+        ));
   }
 
   Widget leftDrawer(context) {
@@ -46,50 +71,127 @@ class _LayoutState extends State<Layout> {
         ));
   }
 
-  Widget body(context) {
-    return AnimatedPositioned(
-        duration: duration,
-        top: 0,
-        bottom: 0,
-        left: isVisible ? 0.8 * screenWidth : 0,
-        right: isVisible ? -0.4 * screenWidth : 0,
-        child: GestureDetector(
-          child: Material(
-            elevation: 0,
-            color: Colors.brown,
-            child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
-              child: Column(
+  Widget rightDrawer(context) {
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const <Widget>[
+            Text(
+              "Right",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            )
+          ],
+        ));
+  }
+
+  Widget body(context, topBar, child) {
+    return GestureDetector(
+      child: Material(
+        elevation: 0,
+        color: backgroundColor,
+        child: Container(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      InkWell(
-                        child: const Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
-                        onTap: () {
-                          setState(() {
-                            isVisible = !isVisible;
-                          });
-                        },
-                      )
-                    ],
-                  )
+                  GestureDetector(
+                    child: const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                      size: 32,
+                      weight: 10,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        positions = {
+                          "left": 0.0,
+                          "center": drawerWidth,
+                          "right": screenWidth
+                        };
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Colors.blue,
+                      child: topBar
+                    ),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          positions = {
+                            "left": -2 * drawerWidth,
+                            "center": -drawerWidth,
+                            "right": screenWidth - drawerWidth
+                          };
+                        });
+                      },
+                      child: Stack(
+                        children: [
+                          const CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                "https://styles.redditmedia.com/t5_40n4ho/styles/profileIcon_snoo055067ce-514e-4b6d-bf5b-7abed9a3fe1b-headshot.png?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&v=enabled&s=62a0a393ae6c2b22abdb56d077671d69abcd6d9d"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Positioned(
+                            bottom: -2,
+                            child: Container(
+                              width: 13.0,
+                              height: 13.0,
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.black, width: 2)),
+                            ),
+                          )
+                        ],
+                      )),
                 ],
-              ),
-            ),
+              )
+            ],
           ),
-          onTap: () {
-            if (isVisible) {
-              setState(() {
-                isVisible = false;
-              });
-            }
-          },
-        )
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          positions = {
+            "left": -drawerWidth,
+            "center": 0.0,
+            "right": drawerWidth
+          };
+        });
+      },
+    );
+  }
+}
+
+class Section extends StatelessWidget {
+  final double width, position;
+  final Widget child;
+
+  const Section({
+    Key? key,
+    required this.width,
+    required this.position,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 200),
+      height: MediaQuery.of(context).size.height,
+      width: width,
+      left: position,
+      child: child,
     );
   }
 }
