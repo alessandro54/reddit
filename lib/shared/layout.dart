@@ -31,6 +31,7 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.child);
     return Scaffold(
         backgroundColor: backgroundColor,
         body: SizedBox(
@@ -45,7 +46,8 @@ class _LayoutState extends State<Layout> {
               Section(
                   width: screenWidth,
                   position: positions["center"]!,
-                  child: body(context, widget.topBar, widget.child)),
+                  child: body(context, widget.topBar,
+                      Container(height: 10000, child: widget.child))),
               Section(
                   width: drawerWidth,
                   position: positions["right"]!,
@@ -64,7 +66,7 @@ class _LayoutState extends State<Layout> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
             Text(
-              "Recently Visited",
+              "Left Drawer",
               style: TextStyle(color: Colors.white, fontSize: 20),
             )
           ],
@@ -80,7 +82,7 @@ class _LayoutState extends State<Layout> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
             Text(
-              "Right",
+              "Right drawer",
               style: TextStyle(color: Colors.white, fontSize: 20),
             )
           ],
@@ -91,7 +93,7 @@ class _LayoutState extends State<Layout> {
     return GestureDetector(
       child: Material(
         elevation: 0,
-        color: backgroundColor,
+        color: Color.fromARGB(255, 174, 247, 247),
         child: Container(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
@@ -118,10 +120,7 @@ class _LayoutState extends State<Layout> {
                     },
                   ),
                   Expanded(
-                    child: Container(
-                      color: Colors.blue,
-                      child: topBar
-                    ),
+                    child: Container(color: Colors.blue, child: topBar),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -155,7 +154,8 @@ class _LayoutState extends State<Layout> {
                         ],
                       )),
                 ],
-              )
+              ),
+              child
             ],
           ),
         ),
