@@ -33,7 +33,7 @@ class Todo {
 
 Future<List<Todo>> fetchTodos() async {
   final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/todos?_limit=10'));
+      .get(Uri.parse('https://jsonplaceholder.typicode.com/todos'));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
@@ -75,26 +75,28 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Layout(
-        topBar: Text('Reduit'),
-        child: FutureBuilder<List<Todo>>(
-            future: futureTodos,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          height: 75,
-                          color: Colors.amber,
-                          child: Center(
-                            child: Text(snapshot.data![index].title),
-                          ));
-                    });
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              return const CircularProgressIndicator();
-            }));
+        topBar: const Text('Reduit'),
+        child: Expanded(
+          child: FutureBuilder<List<Todo>>(
+              future: futureTodos,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                            height: 40,
+                            color: Colors.amber,
+                            child: Center(
+                              child: Text(snapshot.data![index].title),
+                            ));
+                      });
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return const CircularProgressIndicator();
+              })
+        )
+    );
   }
 }

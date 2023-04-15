@@ -31,7 +31,6 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.child);
     return Scaffold(
         backgroundColor: backgroundColor,
         body: SizedBox(
@@ -46,8 +45,8 @@ class _LayoutState extends State<Layout> {
               Section(
                   width: screenWidth,
                   position: positions["center"]!,
-                  child: body(context, widget.topBar,
-                      Container(height: 10000, child: widget.child))),
+                  child: body(context, widget.topBar, widget.child),
+              ),
               Section(
                   width: drawerWidth,
                   position: positions["right"]!,
