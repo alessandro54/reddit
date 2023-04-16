@@ -43,9 +43,9 @@ class _LayoutState extends State<Layout> {
                   position: positions["left"]!,
                   child: leftDrawer(context)),
               Section(
-                  width: screenWidth,
-                  position: positions["center"]!,
-                  child: body(context, widget.topBar, widget.child),
+                width: screenWidth,
+                position: positions["center"]!,
+                child: body(context, widget.topBar, widget.child),
               ),
               Section(
                   width: drawerWidth,
@@ -134,8 +134,8 @@ class _LayoutState extends State<Layout> {
                       child: Stack(
                         children: [
                           const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://styles.redditmedia.com/t5_40n4ho/styles/profileIcon_snoo055067ce-514e-4b6d-bf5b-7abed9a3fe1b-headshot.png?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&v=enabled&s=62a0a393ae6c2b22abdb56d077671d69abcd6d9d"),
+                            backgroundImage:
+                                AssetImage('images/profile_icon.png'),
                             backgroundColor: Colors.transparent,
                           ),
                           Positioned(

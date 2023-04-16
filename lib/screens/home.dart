@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/providers/get_token.dart';
 import 'package:reddit/widgets/shared/layout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -65,17 +66,30 @@ class TodoWidget extends StatelessWidget {
 
 class _HomeState extends State<Home> {
   late Future<List<Todo>> futureTodos;
+  late Future<String> message;
 
   @override
   void initState() {
     super.initState();
     futureTodos = fetchTodos();
+    message = getToken(
+        'indifference44', 'UlD14OcsehAI7vDsz04bUtWs!2hzFwk9WD%24Sk1i8');
   }
 
   @override
   Widget build(BuildContext context) {
     return Layout(
-        topBar: const Text('Reduit'),
+        topBar: FutureBuilder<String>(
+          future: message,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return const CircularProgressIndicator();
+          },
+        ),
         child: Expanded(
             child: FutureBuilder<List<Todo>>(
                 future: futureTodos,
