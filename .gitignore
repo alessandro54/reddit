@@ -133,4 +133,6 @@ app.*.symbols
 
 .idea/*
 *cache*
-.env*
+
+*.env*
+!env.example
