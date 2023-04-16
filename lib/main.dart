@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/navigator.dart' as nav;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 

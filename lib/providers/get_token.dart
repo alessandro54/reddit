@@ -1,13 +1,12 @@
-import 'dart:io' show Platform;
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Get token from Reddit API
 Future<String> getToken(String username, String password) async {
-  String apiUrl = Platform.environment['FLUTTER_APP_API_URL'] ?? "";
-  String clientId = Platform.environment['FLUTTER_APP_CLIENT_ID'] ?? "";
-  String clientSecret = Platform.environment['FLUTTER_APP_CLIENT_SECRET'] ?? "";
+  String apiUrl = dotenv.env['FLUTTER_APP_API_URL'] ?? "";
+  String clientId = dotenv.env['FLUTTER_APP_CLIENT_ID'] ?? "";
+  String clientSecret = dotenv.env['FLUTTER_APP_CLIENT_SECRET'] ?? "";
 
   var response = await http.post(Uri.parse('$apiUrl/access_token'),
       headers: {

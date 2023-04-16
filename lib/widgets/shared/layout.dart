@@ -134,8 +134,8 @@ class _LayoutState extends State<Layout> {
                       child: Stack(
                         children: [
                           const CircleAvatar(
-                            backgroundImage:
-                                AssetImage('images/profile_icon.png'),
+                            // backgroundImage:
+                            //     AssetImage('images/profile_icon.png'),
                             backgroundColor: Colors.transparent,
                           ),
                           Positioned(
