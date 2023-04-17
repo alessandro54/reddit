@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/providers/reddit/get_token.dart';
+import 'package:reddit/providers/reddit/login.dart';
 import 'package:reddit/widgets/shared/layout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -66,24 +66,24 @@ class TodoWidget extends StatelessWidget {
 
 class _HomeState extends State<Home> {
   late Future<List<Todo>> futureTodos;
-  late Future<String> message;
+  late Future<Map<String, dynamic>> message;
 
   @override
   void initState() {
     super.initState();
     futureTodos = fetchTodos();
-    message = getToken(
-        'indifference44', 'UlD14OcsehAI7vDsz04bUtWs!2hzFwk9WD%24Sk1i8');
+    message =
+        login('indifference44', 'UlD14OcsehAI7vDsz04bUtWs!2hzFwk9WD%24Sk1i8');
   }
 
   @override
   Widget build(BuildContext context) {
     return Layout(
-        topBar: FutureBuilder<String>(
+        topBar: FutureBuilder<Map<String, dynamic>>(
           future: message,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data!);
+              return Text(snapshot.data!['access_token']);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
