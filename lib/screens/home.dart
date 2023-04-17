@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/providers/get_token.dart';
+import 'package:reddit/providers/reddit/get_token.dart';
 import 'package:reddit/widgets/shared/layout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
