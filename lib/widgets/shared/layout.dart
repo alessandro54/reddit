@@ -57,13 +57,13 @@ class _LayoutState extends State<Layout> {
   }
 
   Widget leftDrawer(context) {
-    return Align(
+    return const Align(
         alignment: Alignment.centerLeft,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
+          children: <Widget>[
             Text(
               "Left Drawer",
               style: TextStyle(color: Colors.white, fontSize: 20),
@@ -73,13 +73,13 @@ class _LayoutState extends State<Layout> {
   }
 
   Widget rightDrawer(context) {
-    return Align(
+    return const Align(
         alignment: Alignment.centerRight,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
+          children: <Widget>[
             Text(
               "Right drawer",
               style: TextStyle(color: Colors.white, fontSize: 20),
@@ -92,7 +92,7 @@ class _LayoutState extends State<Layout> {
     return GestureDetector(
       child: Material(
         elevation: 0,
-        color: Color.fromARGB(255, 174, 247, 247),
+        color: Colors.black,
         child: Container(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
@@ -118,9 +118,6 @@ class _LayoutState extends State<Layout> {
                       });
                     },
                   ),
-                  Expanded(
-                    child: Container(color: Colors.blue, child: topBar),
-                  ),
                   GestureDetector(
                       onTap: () {
                         setState(() {
@@ -134,8 +131,8 @@ class _LayoutState extends State<Layout> {
                       child: Stack(
                         children: [
                           const CircleAvatar(
-                            // backgroundImage:
-                            //     AssetImage('images/profile_icon.png'),
+                            backgroundImage:
+                                AssetImage('assets/profile_icon.png'),
                             backgroundColor: Colors.transparent,
                           ),
                           Positioned(

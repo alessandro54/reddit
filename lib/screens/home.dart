@@ -1,48 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/models/sub_reddit/sub_reddit.dart';
 import 'package:reddit/providers/reddit/login.dart';
+import 'package:reddit/providers/reddit_provider.dart';
 import 'package:reddit/widgets/shared/layout.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-class Todo {
-  final int userId;
-  final int id;
-  final String title;
-  final bool completed;
-
-  const Todo({
-    required this.userId,
-    required this.id,
-    required this.title,
-    required this.completed,
-  });
-
-  factory Todo.fromJson(Map<String, dynamic> json) {
-    return Todo(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
-      completed: json['completed'],
-    );
-  }
-
-  @override
-  toString() {
-    return 'Todo { userId: $userId, id: $id, title: $title, completed: $completed }';
-  }
-}
-
-Future<List<Todo>> fetchTodos() async {
-  final response =
-      await http.get(Uri.parse('https://jsonplaceholder.typicode.com/todos'));
-
-  if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
-    return jsonResponse.map((todo) => Todo.fromJson(todo)).toList();
-  } else {
-    throw Exception('Failed to load todos from API');
-  }
-}
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -53,60 +16,45 @@ class Home extends StatefulWidget {
   }
 }
 
-class TodoWidget extends StatelessWidget {
-  final Todo todo;
-
-  const TodoWidget({Key? key, required this.todo}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(todo.title);
-  }
-}
-
 class _HomeState extends State<Home> {
-  late Future<List<Todo>> futureTodos;
   late Future<Map<String, dynamic>> message;
 
   @override
   void initState() {
     super.initState();
-    futureTodos = fetchTodos();
-    message =
-        login('indifference44', 'UlD14OcsehAI7vDsz04bUtWs!2hzFwk9WD%24Sk1i8');
+    message = login('indifference44', dotenv.env['FLUTTER_APP_PASSWORD']!);
   }
 
   @override
   Widget build(BuildContext context) {
     return Layout(
-        topBar: FutureBuilder<Map<String, dynamic>>(
-          future: message,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!['access_token']);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return const CircularProgressIndicator();
-          },
-        ),
+        topBar: const Text('Home'),
         child: Expanded(
-            child: FutureBuilder<List<Todo>>(
-                future: futureTodos,
+            child: FutureBuilder<Map<String, dynamic>>(
+                future: RedditProvider().fetchBest(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    var items = snapshot.data!['data']['children'];
                     return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                              height: 40,
-                              color: Colors.amber,
-                              child: Center(
-                                child: Text(snapshot.data![index].title),
-                              ));
-                        });
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        Subreddit subReddit = Subreddit.fromJson(items[index]['data']);
+
+                        return Container(
+                          height: 40,
+                          color: Colors.amber,
+                          child: Center(
+                            child: Text(
+                              subReddit.title,
+                              style: const TextStyle(fontSize: 18),
+                            )
+                          )
+                        );
+                      },
+                    );
                   } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
+                    return Text("${snapshot.error}",
+                        style: const TextStyle(color: Colors.white));
                   }
                   return const CircularProgressIndicator();
                 })));

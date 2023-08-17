@@ -27,9 +27,10 @@ mixin _$Subreddit {
   String get title => throw _privateConstructorUsedError;
   String get subreddit_name_prefixed => throw _privateConstructorUsedError;
   bool get hidden => throw _privateConstructorUsedError;
-  int get downs => throw _privateConstructorUsedError;
-  int get num_comments => throw _privateConstructorUsedError;
   int get ups => throw _privateConstructorUsedError;
+  int get downs => throw _privateConstructorUsedError;
+  double get upvote_ratio => throw _privateConstructorUsedError;
+  int get num_comments => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,9 +51,10 @@ abstract class $SubredditCopyWith<$Res> {
       String title,
       String subreddit_name_prefixed,
       bool hidden,
+      int ups,
       int downs,
-      int num_comments,
-      int ups});
+      double upvote_ratio,
+      int num_comments});
 }
 
 /// @nodoc
@@ -75,9 +77,10 @@ class _$SubredditCopyWithImpl<$Res, $Val extends Subreddit>
     Object? title = null,
     Object? subreddit_name_prefixed = null,
     Object? hidden = null,
-    Object? downs = null,
-    Object? num_comments = null,
     Object? ups = null,
+    Object? downs = null,
+    Object? upvote_ratio = null,
+    Object? num_comments = null,
   }) {
     return _then(_value.copyWith(
       subreddit: null == subreddit
@@ -108,17 +111,21 @@ class _$SubredditCopyWithImpl<$Res, $Val extends Subreddit>
           ? _value.hidden
           : hidden // ignore: cast_nullable_to_non_nullable
               as bool,
+      ups: null == ups
+          ? _value.ups
+          : ups // ignore: cast_nullable_to_non_nullable
+              as int,
       downs: null == downs
           ? _value.downs
           : downs // ignore: cast_nullable_to_non_nullable
               as int,
+      upvote_ratio: null == upvote_ratio
+          ? _value.upvote_ratio
+          : upvote_ratio // ignore: cast_nullable_to_non_nullable
+              as double,
       num_comments: null == num_comments
           ? _value.num_comments
           : num_comments // ignore: cast_nullable_to_non_nullable
-              as int,
-      ups: null == ups
-          ? _value.ups
-          : ups // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -139,9 +146,10 @@ abstract class _$$_SubredditCopyWith<$Res> implements $SubredditCopyWith<$Res> {
       String title,
       String subreddit_name_prefixed,
       bool hidden,
+      int ups,
       int downs,
-      int num_comments,
-      int ups});
+      double upvote_ratio,
+      int num_comments});
 }
 
 /// @nodoc
@@ -162,9 +170,10 @@ class __$$_SubredditCopyWithImpl<$Res>
     Object? title = null,
     Object? subreddit_name_prefixed = null,
     Object? hidden = null,
-    Object? downs = null,
-    Object? num_comments = null,
     Object? ups = null,
+    Object? downs = null,
+    Object? upvote_ratio = null,
+    Object? num_comments = null,
   }) {
     return _then(_$_Subreddit(
       subreddit: null == subreddit
@@ -195,17 +204,21 @@ class __$$_SubredditCopyWithImpl<$Res>
           ? _value.hidden
           : hidden // ignore: cast_nullable_to_non_nullable
               as bool,
+      ups: null == ups
+          ? _value.ups
+          : ups // ignore: cast_nullable_to_non_nullable
+              as int,
       downs: null == downs
           ? _value.downs
           : downs // ignore: cast_nullable_to_non_nullable
               as int,
+      upvote_ratio: null == upvote_ratio
+          ? _value.upvote_ratio
+          : upvote_ratio // ignore: cast_nullable_to_non_nullable
+              as double,
       num_comments: null == num_comments
           ? _value.num_comments
           : num_comments // ignore: cast_nullable_to_non_nullable
-              as int,
-      ups: null == ups
-          ? _value.ups
-          : ups // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -222,9 +235,10 @@ class _$_Subreddit with DiagnosticableTreeMixin implements _Subreddit {
       required this.title,
       required this.subreddit_name_prefixed,
       required this.hidden,
+      required this.ups,
       required this.downs,
-      required this.num_comments,
-      required this.ups});
+      required this.upvote_ratio,
+      required this.num_comments});
 
   factory _$_Subreddit.fromJson(Map<String, dynamic> json) =>
       _$$_SubredditFromJson(json);
@@ -244,15 +258,17 @@ class _$_Subreddit with DiagnosticableTreeMixin implements _Subreddit {
   @override
   final bool hidden;
   @override
+  final int ups;
+  @override
   final int downs;
   @override
-  final int num_comments;
+  final double upvote_ratio;
   @override
-  final int ups;
+  final int num_comments;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Subreddit(subreddit: $subreddit, selftext: $selftext, author_fullname: $author_fullname, saved: $saved, title: $title, subreddit_name_prefixed: $subreddit_name_prefixed, hidden: $hidden, downs: $downs, num_comments: $num_comments, ups: $ups)';
+    return 'Subreddit(subreddit: $subreddit, selftext: $selftext, author_fullname: $author_fullname, saved: $saved, title: $title, subreddit_name_prefixed: $subreddit_name_prefixed, hidden: $hidden, ups: $ups, downs: $downs, upvote_ratio: $upvote_ratio, num_comments: $num_comments)';
   }
 
   @override
@@ -268,9 +284,10 @@ class _$_Subreddit with DiagnosticableTreeMixin implements _Subreddit {
       ..add(DiagnosticsProperty(
           'subreddit_name_prefixed', subreddit_name_prefixed))
       ..add(DiagnosticsProperty('hidden', hidden))
+      ..add(DiagnosticsProperty('ups', ups))
       ..add(DiagnosticsProperty('downs', downs))
-      ..add(DiagnosticsProperty('num_comments', num_comments))
-      ..add(DiagnosticsProperty('ups', ups));
+      ..add(DiagnosticsProperty('upvote_ratio', upvote_ratio))
+      ..add(DiagnosticsProperty('num_comments', num_comments));
   }
 
   @override
@@ -290,10 +307,12 @@ class _$_Subreddit with DiagnosticableTreeMixin implements _Subreddit {
                     other.subreddit_name_prefixed, subreddit_name_prefixed) ||
                 other.subreddit_name_prefixed == subreddit_name_prefixed) &&
             (identical(other.hidden, hidden) || other.hidden == hidden) &&
+            (identical(other.ups, ups) || other.ups == ups) &&
             (identical(other.downs, downs) || other.downs == downs) &&
+            (identical(other.upvote_ratio, upvote_ratio) ||
+                other.upvote_ratio == upvote_ratio) &&
             (identical(other.num_comments, num_comments) ||
-                other.num_comments == num_comments) &&
-            (identical(other.ups, ups) || other.ups == ups));
+                other.num_comments == num_comments));
   }
 
   @JsonKey(ignore: true)
@@ -307,9 +326,10 @@ class _$_Subreddit with DiagnosticableTreeMixin implements _Subreddit {
       title,
       subreddit_name_prefixed,
       hidden,
+      ups,
       downs,
-      num_comments,
-      ups);
+      upvote_ratio,
+      num_comments);
 
   @JsonKey(ignore: true)
   @override
@@ -334,9 +354,10 @@ abstract class _Subreddit implements Subreddit {
       required final String title,
       required final String subreddit_name_prefixed,
       required final bool hidden,
+      required final int ups,
       required final int downs,
-      required final int num_comments,
-      required final int ups}) = _$_Subreddit;
+      required final double upvote_ratio,
+      required final int num_comments}) = _$_Subreddit;
 
   factory _Subreddit.fromJson(Map<String, dynamic> json) =
       _$_Subreddit.fromJson;
@@ -356,11 +377,13 @@ abstract class _Subreddit implements Subreddit {
   @override
   bool get hidden;
   @override
+  int get ups;
+  @override
   int get downs;
   @override
-  int get num_comments;
+  double get upvote_ratio;
   @override
-  int get ups;
+  int get num_comments;
   @override
   @JsonKey(ignore: true)
   _$$_SubredditCopyWith<_$_Subreddit> get copyWith =>

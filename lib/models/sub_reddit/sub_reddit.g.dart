@@ -14,9 +14,10 @@ _$_Subreddit _$$_SubredditFromJson(Map<String, dynamic> json) => _$_Subreddit(
       title: json['title'] as String,
       subreddit_name_prefixed: json['subreddit_name_prefixed'] as String,
       hidden: json['hidden'] as bool,
-      downs: json['downs'] as int,
-      num_comments: json['num_comments'] as int,
       ups: json['ups'] as int,
+      downs: json['downs'] as int,
+      upvote_ratio: (json['upvote_ratio'] as num).toDouble(),
+      num_comments: json['num_comments'] as int,
     );
 
 Map<String, dynamic> _$$_SubredditToJson(_$_Subreddit instance) =>
@@ -28,7 +29,8 @@ Map<String, dynamic> _$$_SubredditToJson(_$_Subreddit instance) =>
       'title': instance.title,
       'subreddit_name_prefixed': instance.subreddit_name_prefixed,
       'hidden': instance.hidden,
-      'downs': instance.downs,
-      'num_comments': instance.num_comments,
       'ups': instance.ups,
+      'downs': instance.downs,
+      'upvote_ratio': instance.upvote_ratio,
+      'num_comments': instance.num_comments,
     };
