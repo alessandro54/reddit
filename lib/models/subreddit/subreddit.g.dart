@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sub_reddit.dart';
+part of 'subreddit.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

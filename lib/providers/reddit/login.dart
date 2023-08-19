@@ -1,8 +1,7 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'package:reddit/providers/secrets_provider.dart';
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+import 'package:reddit/providers/secrets_provider.dart';
 import 'package:reddit/providers/token_manager_provider.dart';
 
 // Get token from Reddit API

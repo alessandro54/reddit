@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/models/sub_reddit/sub_reddit.dart';
+import 'package:reddit/models/subreddit/subreddit.dart';
 import 'package:reddit/providers/reddit/login.dart';
 import 'package:reddit/providers/reddit_provider.dart';
+import 'package:reddit/widgets/best_subreddit.dart';
 import 'package:reddit/widgets/shared/layout.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import '../providers/secrets_provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,7 +22,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    message = login('indifference44', dotenv.env['FLUTTER_APP_PASSWORD']!);
+    SecretsProvider secretsProvider = SecretsProvider();
+    message = login('indifference44', secretsProvider.password);
   }
 
   @override
@@ -35,21 +36,15 @@ class _HomeState extends State<Home> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var items = snapshot.data!['data']['children'];
-                    return ListView.builder(
+                    return ListView.separated(
                       itemCount: items.length,
                       itemBuilder: (context, index) {
-                        Subreddit subReddit = Subreddit.fromJson(items[index]['data']);
-
-                        return Container(
-                          height: 40,
-                          color: Colors.amber,
-                          child: Center(
-                            child: Text(
-                              subReddit.title,
-                              style: const TextStyle(fontSize: 18),
-                            )
-                          )
-                        );
+                        return BestSubreddit(
+                            subreddit:
+                                Subreddit.fromJson(items[index]['data']));
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider();
                       },
                     );
                   } else if (snapshot.hasError) {

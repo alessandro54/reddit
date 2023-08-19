@@ -2,9 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter/foundation.dart';
 
-part 'sub_reddit.freezed.dart';
-
-part 'sub_reddit.g.dart';
+part 'subreddit.freezed.dart';
+part 'subreddit.g.dart';
 
 @freezed
 class Subreddit with _$Subreddit {
